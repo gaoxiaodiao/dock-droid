@@ -98,13 +98,16 @@ RUN git clone --recurse-submodules --depth 1 --branch "${BRANCH}" "${REPO}"
 
 WORKDIR /home/arch/dock-droid
 
-RUN touch ./enable-ssh.sh \
-    && chmod +x ./enable-ssh.sh \
-    && tee -a enable-ssh.sh <<< '[[ -f /etc/ssh/ssh_host_rsa_key ]] || \' \
-    && tee -a enable-ssh.sh <<< '[[ -f /etc/ssh/ssh_host_ed25519_key ]] || \' \
-    && tee -a enable-ssh.sh <<< '[[ -f /etc/ssh/ssh_host_ed25519_key ]] || \' \
-    && tee -a enable-ssh.sh <<< 'sudo /usr/bin/ssh-keygen -A' \
-    && tee -a enable-ssh.sh <<< 'nohup sudo /usr/bin/sshd -D &'
+# ============================
+# RUN touch ./enable-ssh.sh \
+#     && chmod +x ./enable-ssh.sh \
+#     && tee -a enable-ssh.sh <<< '[[ -f /etc/ssh/ssh_host_rsa_key ]] || \' \
+#     && tee -a enable-ssh.sh <<< '[[ -f /etc/ssh/ssh_host_ed25519_key ]] || \' \
+#     && tee -a enable-ssh.sh <<< '[[ -f /etc/ssh/ssh_host_ed25519_key ]] || \' \
+#     && tee -a enable-ssh.sh <<< 'sudo /usr/bin/ssh-keygen -A' \
+#     && tee -a enable-ssh.sh <<< 'nohup sudo /usr/bin/sshd -D &'
+# =============================
+
 
 RUN yes | sudo pacman -Syu qemu virglrenderer libvirt dnsmasq virt-manager bridge-utils openresolv jack ebtables edk2-ovmf netctl libvirt-dbus wget --overwrite --noconfirm \
     && yes | sudo pacman -Scc
@@ -118,7 +121,7 @@ ARG LINUX=true
 
 ARG COMPLETE=true
 
-ARG CDROM_IMAGE_URL=https://sourceforge.net/projects/blissos-x86/files/Official/bleeding_edge/Generic%20builds%20-%20Pie/11.13/Bliss-v11.13--OFFICIAL-20201113-1525_x86_64_k-k4.19.122-ax86-ga-rmi_m-20.1.0-llvm90_dgc-t3_gms_intelhd.iso
+ARG CDROM_IMAGE_URL=https://sourceforge.net/projects/blissos-x86/files/Official/BlissOS14/OpenGApps/Generic/Bliss-v14.10.3-x86_64-OFFICIAL-opengapps-20241012.iso
 # ARG CDROM_IMAGE_URL=https://sourceforge.net/projects/blissos-dev/files/Android-Generic/PC/bliss/R/gapps/BlissOS-14.3-x86_64-202106261907_k-android12-5.10.46-ax86_m-21.1.3_r-x86_emugapps_cros-hd.iso
 # ARG CDROM_IMAGE_URL=https://sourceforge.net/projects/blissos-dev/files/Android-Generic/PC/bliss/R/gapps/BlissOS-14.3-x86_64-202106181339_k-google-5.4.112-lts-ax86_m-r_emugapps_cros-hd_gearlock.iso
 
@@ -134,7 +137,7 @@ RUN if [[ "${COMPLETE}" ]]; then \
         && wget ${WGET_OPTIONS} "${CDROM_IMAGE_URL}" || exit 1 \
     ; fi
 
-ARG QCOW_SIZE=50G
+ARG QCOW_SIZE=20G
 
 RUN qemu-img create -f qcow2 /home/arch/dock-droid/android.qcow2 "${QCOW_SIZE}"
 
@@ -233,6 +236,6 @@ VOLUME ["/tmp/.X11-unix"]
 
 CMD export CDROM="${CDROM:="$(basename "${CDROM_IMAGE_URL}")"}" \
     && touch ./android.qcow2 "${CDROM}" \
-    && ./enable-ssh.sh \
+    # && ./enable-ssh.sh \
     && /bin/bash -c ./Launch.sh
 
