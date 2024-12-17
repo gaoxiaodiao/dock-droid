@@ -115,6 +115,9 @@ WORKDIR /home/arch
 
 ENV PACMAN_DISABLE_DOWNLOAD_SANDBOX=1
 
+RUN echo "[options]" | sudo tee -a /etc/pacman.conf && \
+    echo "DisableDownloadSandbox" | sudo tee -a /etc/pacman.conf
+
 RUN yes | sudo -E pacman -Syu qemu virglrenderer libvirt dnsmasq virt-manager bridge-utils openresolv jack ebtables edk2-ovmf netctl libvirt-dbus wget --overwrite --noconfirm \
     && yes | sudo -E pacman -Scc
 
