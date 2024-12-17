@@ -94,16 +94,14 @@ RUN pacman -Syu git zip vim nano alsa-utils openssh unzip usbutils --noconfirm \
 # ==================
 
 
-
-
 WORKDIR /home/arch
 
 # optional --build-arg to change branches for testing
-ARG BRANCH=master
-ARG REPO='https://github.com/sickcodes/dock-droid.git'
-RUN git clone --recurse-submodules --depth 1 --branch "${BRANCH}" "${REPO}"
+# ARG BRANCH=master
+# ARG REPO='https://github.com/sickcodes/dock-droid.git'
+# RUN git clone --recurse-submodules --depth 1 --branch "${BRANCH}" "${REPO}"
 
-WORKDIR /home/arch/dock-droid
+# WORKDIR /home/arch/dock-droid
 
 # ============================
 # RUN touch ./enable-ssh.sh \
