@@ -52,7 +52,7 @@ RUN pacman -Syu git zip vim nano alsa-utils openssh unzip usbutils --noconfirm \
     && chown arch:arch /home/arch
 
 # allow ssh to container
-RUN mkdir -m 700 /root/.ssh
+# RUN mkdir -m 700 /root/.ssh
 
 WORKDIR /root/.ssh
 RUN touch authorized_keys \
