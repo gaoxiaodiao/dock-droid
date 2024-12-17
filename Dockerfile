@@ -51,42 +51,49 @@ RUN pacman -Syu git zip vim nano alsa-utils openssh unzip usbutils --noconfirm \
     && mkdir /home/arch \
     && chown arch:arch /home/arch
 
+# ===================
 # allow ssh to container
 # RUN mkdir -m 700 /root/.ssh
 
-WORKDIR /root/.ssh
-RUN touch authorized_keys \
-    && chmod 644 authorized_keys
+# WORKDIR /root/.ssh
+# RUN touch authorized_keys \
+#     && chmod 644 authorized_keys
 
-WORKDIR /etc/ssh
-RUN tee -a sshd_config <<< 'AllowTcpForwarding yes' \
-    && tee -a sshd_config <<< 'PermitTunnel yes' \
-    && tee -a sshd_config <<< 'X11Forwarding yes' \
-    && tee -a sshd_config <<< 'PasswordAuthentication yes' \
-    && tee -a sshd_config <<< 'PermitRootLogin yes' \
-    && tee -a sshd_config <<< 'PubkeyAuthentication yes' \
-    && tee -a sshd_config <<< 'HostKey /etc/ssh/ssh_host_rsa_key' \
-    && tee -a sshd_config <<< 'HostKey /etc/ssh/ssh_host_ecdsa_key' \
-    && tee -a sshd_config <<< 'HostKey /etc/ssh/ssh_host_ed25519_key'
+# WORKDIR /etc/ssh
+# RUN tee -a sshd_config <<< 'AllowTcpForwarding yes' \
+#     && tee -a sshd_config <<< 'PermitTunnel yes' \
+#     && tee -a sshd_config <<< 'X11Forwarding yes' \
+#     && tee -a sshd_config <<< 'PasswordAuthentication yes' \
+#     && tee -a sshd_config <<< 'PermitRootLogin yes' \
+#     && tee -a sshd_config <<< 'PubkeyAuthentication yes' \
+#     && tee -a sshd_config <<< 'HostKey /etc/ssh/ssh_host_rsa_key' \
+#     && tee -a sshd_config <<< 'HostKey /etc/ssh/ssh_host_ecdsa_key' \
+#     && tee -a sshd_config <<< 'HostKey /etc/ssh/ssh_host_ed25519_key'
+# ========================
 
-USER arch
 
-ENV USER arch
+# ==========
+# USER arch
 
-WORKDIR /home/arch
+# ENV USER arch
 
-RUN git clone https://aur.archlinux.org/android-sdk-platform-tools.git \
-    && cd android-sdk-platform-tools \
-    && makepkg -si --nocheck --force --noconfirm \
-    ; source /etc/profile.d/android-sdk-platform-tools.sh || exit 1
+# WORKDIR /home/arch
 
-RUN git clone https://aur.archlinux.org/binfmt-qemu-static.git \
-    && cd binfmt-qemu-static \
-    && makepkg -si --nocheck --force --noconfirm || exit 1
+# RUN git clone https://aur.archlinux.org/android-sdk-platform-tools.git \
+#     && cd android-sdk-platform-tools \
+#     && makepkg -si --nocheck --force --noconfirm \
+#     ; source /etc/profile.d/android-sdk-platform-tools.sh || exit 1
 
-RUN git clone https://aur.archlinux.org/qemu-user-static-bin.git \
-    && cd qemu-user-static-bin \
-    && makepkg -si --nocheck --force --noconfirm || exit 1
+# RUN git clone https://aur.archlinux.org/binfmt-qemu-static.git \
+#     && cd binfmt-qemu-static \
+#     && makepkg -si --nocheck --force --noconfirm || exit 1
+
+# RUN git clone https://aur.archlinux.org/qemu-user-static-bin.git \
+#     && cd qemu-user-static-bin \
+#     && makepkg -si --nocheck --force --noconfirm || exit 1
+# ==================
+
+
 
 
 WORKDIR /home/arch
