@@ -113,10 +113,10 @@ WORKDIR /home/arch
 #     && tee -a enable-ssh.sh <<< 'nohup sudo /usr/bin/sshd -D &'
 # =============================
 
-ENV PACMAN_DISABLE_LANDLOCK=1
+ENV PACMAN_DISABLE_DOWNLOAD_SANDBOX=1
 
-RUN yes | sudo pacman -Syu qemu virglrenderer libvirt dnsmasq virt-manager bridge-utils openresolv jack ebtables edk2-ovmf netctl libvirt-dbus wget --overwrite --noconfirm \
-    && yes | sudo pacman -Scc
+RUN yes | sudo -E pacman -Syu qemu virglrenderer libvirt dnsmasq virt-manager bridge-utils openresolv jack ebtables edk2-ovmf netctl libvirt-dbus wget --overwrite --noconfirm \
+    && yes | sudo -E pacman -Scc
 
 ARG LINUX=true
 
